@@ -1,11 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2.7
 
 import os
 import sys
 from PIL import Image
-
+import math
 
 NINEPATCH_BODY_SCALING_LIMIT = 4
+
+def p27raund(f):
+    return int(math.floor(f))
+    
 
 class Unpacker:
     def __init__(self, atlas_file, texture_dir=None):
@@ -35,7 +39,7 @@ class Unpacker:
 
                 if not split:
                     if scale != 1.0:
-                        im2 = im2.resize((max(1, round(orig_x * scale)), max(1, round(orig_y * scale))),
+                        im2 = im2.resize((max(1, p27raund(orig_x * scale)), max(1, p27raund(orig_y * scale))),
                                          Image.ANTIALIAS)
                     im2.save('%s/%s.png' % (out, image.name))
                 else:
@@ -46,14 +50,14 @@ class Unpacker:
                         h = split[0], orig_x - split[0] - split[1], split[1]
                         v = split[2], orig_y - split[2] - split[3], split[3]
                         h2 = (
-                            max(1, round(h[0] * scale)),
-                            h[1] if h[1] < NINEPATCH_BODY_SCALING_LIMIT else max(1, round(h[1] * scale)),
-                            max(1, round(h[2] * scale))
+                            max(1, p27raund(h[0] * scale)),
+                            h[1] if h[1] < NINEPATCH_BODY_SCALING_LIMIT else max(1, p27raund(h[1] * scale)),
+                            max(1, p27raund(h[2] * scale))
                         )
                         v2 = (
-                            max(1, round(v[0] * scale)),
-                            v[1] if v[1] < NINEPATCH_BODY_SCALING_LIMIT else max(1, round(v[1] * scale)),
-                            max(1, round(v[2] * scale))
+                            max(1, p27raund(v[0] * scale)),
+                            v[1] if v[1] < NINEPATCH_BODY_SCALING_LIMIT else max(1, p27raund(v[1] * scale)),
+                            max(1, p27raund(v[2] * scale))
                         )
 
                         im3 = Image.new('RGBA', (sum(h2) + 2, sum(v2) + 2))

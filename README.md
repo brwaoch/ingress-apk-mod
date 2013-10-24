@@ -149,7 +149,11 @@ It depends on multiple jars and command line tools:
 - bash
 - Python3
 - JDK7, java and javac in PATH
+<<<<<<< HEAD
 - apktool.jar v2.x (must be build from sources, see https://github.com/brutall/brut.apktool/tree/wip-2.0)
+=======
+- apktool.jar v2.x (must be compiled from source)
+>>>>>>> 669d77bfdd3c88733aa7bf8b35aa792a810fb3b0
 - baksmali.jar v1.4.2
 - libgdx v0.9.7: gdx.jar, gdx-natives.jar, gdx-tools.jar, gdx-backend-lwjgl.jar, gdx-backend-lwjgl-natives.jar
 - android.jar from Android SDK

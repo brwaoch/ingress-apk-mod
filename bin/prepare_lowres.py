@@ -1,16 +1,16 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2.7
 
 import os
 import re
 import shutil
 import subprocess
 import tempfile
-from itertools import tee, filterfalse
+from itertools import tee, ifilterfalse
 from PIL import Image
 
 from common import HOME
 import texture_unpacker
-
+import math
 
 PAT_NEMESIS_COMPASS = re.compile(
 '''^    compass: \{
@@ -30,6 +30,9 @@ def main():
     finally:
         os.chdir(cwd)
 
+def p27raund(f):
+    return int(math.floor(f))
+    
 
 def resize(name, scale, coda_sizes):
     shutil.rmtree('build/assets/data-%s' % name, ignore_errors=True)
@@ -51,7 +54,7 @@ def resize(name, scale, coda_sizes):
       width: %d.0,
       x: %d.0,
       y: %d.0
-    }''' % tuple([round(float(m.group(i)) * scale) for i in range(1, 5)])
+    }''' % tuple([p27raund(float(m.group(i)) * scale) for i in range(1, 5)])
 
     s = open('app/assets/common/data/nemesis.json').read()
     s = PAT_NEMESIS_COMPASS.sub(_repl, s, 1)
@@ -60,7 +63,7 @@ def resize(name, scale, coda_sizes):
     # Resize upgrade/data*/* images
     for f in os.listdir('app/assets/upgrade/data'):
         im = Image.open('app/assets/upgrade/data/%s' % f)
-        im.resize((round(im.size[0] * scale), round(im.size[1] * scale)), Image.ANTIALIAS).save(
+        im.resize((p27raund(im.size[0] * scale), p27raund(im.size[1] * scale)), Image.ANTIALIAS).save(
             'build/assets/data-%s/upgrade/%s' % (name, f))
 
     # Resize atlases
@@ -93,9 +96,9 @@ def resize(name, scale, coda_sizes):
     page = u.atlas.pages[0]
     for im in images2:
         p = im.params
-        p['xy'] = round(p['xy'][0] * scale), round(p['xy'][1] * scale)
-        p['size'] = round(p['size'][0] * scale), round(p['size'][1] * scale)
-        p['orig'] = round(p['orig'][0] * scale), round(p['orig'][1] * scale)
+        p['xy'] = p27raund(p['xy'][0] * scale), p27raund(p['xy'][1] * scale)
+        p['size'] = p27raund(p['size'][0] * scale), p27raund(p['size'][1] * scale)
+        p['orig'] = p27raund(p['orig'][0] * scale), p27raund(p['orig'][1] * scale)
         page.images.append(im)
     u.save_atlas('build/assets/data-%s/portal_info/portal_ui.atlas' % name)
 
@@ -107,7 +110,7 @@ def texture_pack(in_dir, out_dir, name):
 
 def partition(pred, iterable):
     t1, t2 = tee(iterable)
-    return filter(pred, t2), filterfalse(pred, t1)
+    return filter(pred, t2), ifilterfalse(pred, t1)
 
 
 if __name__ == '__main__':
