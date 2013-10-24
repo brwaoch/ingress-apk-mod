@@ -15,8 +15,8 @@ def main():
     cwd = os.getcwd()
     os.chdir(HOME)
     try:
-        repack('', (20, 32, 40, 48))
-        repack('-xhdpi', (32, 60, 72, 85))
+        repack('', (20, 31, 40, 48))
+        repack('-xhdpi', (32, 60, 72, 86))
         repack('-xxhdpi', (50, 85, 103, 121))
     finally:
         os.chdir(cwd)
