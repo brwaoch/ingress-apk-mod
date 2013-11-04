@@ -11,6 +11,9 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import broot.ingress.mod.util.Config;
 import broot.ingress.mod.util.UiVariant;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.nianticproject.ingress.NemesisActivity;
 import com.nianticproject.ingress.common.app.NemesisMemoryCache;
@@ -20,6 +23,7 @@ import com.nianticproject.ingress.common.inventory.MenuControllerImpl;
 import com.nianticproject.ingress.common.scanner.visuals.EnergyGlobVisuals;
 import com.nianticproject.ingress.common.scanner.visuals.PortalParticleRender;
 import com.nianticproject.ingress.common.ui.elements.PortalInfoDialog;
+import com.nianticproject.ingress.common.ui.elements.AvatarPlayerStatusBar;
 import com.nianticproject.ingress.common.ui.widget.MenuTabId;
 
 import java.util.ArrayList;
@@ -36,6 +40,9 @@ public class Mod {
     public static Skin skin;
 
     public static PortalInfoDialog portalInfoDialog;
+    public static AvatarPlayerStatusBar avatarPlayerStatusBar;
+    public static long lastTap;
+    public static boolean statusBarIsVisible;
 
     public static DisplayMetrics displayMetrics;
     public static UiVariant currUiVariant;
@@ -43,6 +50,8 @@ public class Mod {
     public static PowerManager.WakeLock ksoWakeLock;
 
     public static void init() {
+        statusBarIsVisible = true;
+        lastTap = System.currentTimeMillis();
 //        Debug.waitForDebugger();
     }
 

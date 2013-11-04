@@ -55,7 +55,7 @@ def main():
     edit.find_method_def('create')
     edit.find_line(r' return-void', where='down')
     edit.prepare_to_insert_before(True)
-    edit.add_invoke_entry('SubActiityApplicationLisener_onCreated')
+    edit.add_invoke_entry('SubActivityApplicationLisener_onCreated')
     edit.save()
 
     edit = edit_cls('MenuTabId')
@@ -224,11 +224,11 @@ def main():
     edit.add_invoke_entry('ShaderUtils_compileShader', 'p0, p1, p2', shaderReg)
     edit.save()
 
-    edit = edit_cls('CommsAdapter')
-    edit.prepare_after_prologue('bindView')
-    edit.find_line(r' iget-object v3, p0, %s->m:%s' % (expr('$CommsAdapter'), expr('$SimpleDateFormat')))
+    edit = edit_cls('CommStreamAdapter')
+    edit.prepare_after_prologue('getView')
+    edit.find_line(r' sget-object ([pv]\d+), %s->a:%s' % (expr('$CommStreamAdapter'), expr('$SimpleDateFormat')))
     edit.comment_line()
-    edit.add_invoke_entry('CommsAdapter_getDateFormat', '', 'v3')
+    edit.add_invoke_entry('CommsAdapter_getDateFormat', '', edit.vars[0])
     edit.save()
 
     #remove recycle animation
@@ -266,17 +266,18 @@ def main():
 
     #change order of buttons in round menu
     edit = edit_cls('ScannerTouchHandler')
+    
     edit.find_line(' invoke-direct/range \{v0 \.\. v7\}, (.+)$')
     edit.prepare_to_insert_before()
-
     edit.add_invoke_entry('ScannerTouchHandler_shouldSwapTouchMenuButtons', ret='v11')
     edit.add_line(' if-eqz v11, :noswap')
-    
     edit.add_line(' move-object v11, v3')
     edit.add_line(' move-object v3, v6')
     edit.add_line(' move-object v6, v11')
-
     edit.add_line(' :noswap')
+    
+    edit.prepare_after_prologue('touchDown')
+    edit.add_invoke_entry('ScannerTouchHandler_onTouchDown', 'p1, p2, p3')
     edit.save()
 
     #change format for AP and XM in COMM
@@ -287,14 +288,46 @@ def main():
     edit.replace_in_line('%d', '%,d')
     edit.save()
 
+    edit = edit_cls('ScannerActivity')
+    edit.prepare_after_prologue('updateState')
+    edit.add_invoke_entry('ScannerActivity_onUpdateState', 'p0')
+    edit.save()
+
     # privacy
     edit = edit_cls('AvatarPlayerStatusBar')
-    edit.find_line(' invoke-interface {v0, v1}, Lcom/nianticproject/ingress/common/model/l;->a\(Ljava/lang/String;\)V')
+    edit.find_line(' invoke-interface {v0, v1}, Lcom/nianticproject/ingress/common/model/k;->a\(Ljava/lang/String;\)V')
     edit.prepare_to_insert_before()
     edit.add_invoke_entry('isPrivacyEnabled', ret='v5')
     edit.add_line(' if-eqz v5, :lbl_privacy_disabled')
     edit.add_line(' const-string/jumbo v1, ""')
     edit.add_line(' :lbl_privacy_disabled')
+    
+    edit.mod_field_def('stage', 'public')
+    edit.mod_field_def('skin', 'public')
+    edit.mod_field_def('contentGroup', 'public')
+
+    edit.find_method_def('createUi')
+    edit.find_line(' \.locals 10', where='down')
+    edit.replace_in_line('10', '11')
+    edit.find_line(' new-instance v0, %s' % expr('$Group'))
+    edit.prepare_to_insert_before()
+    edit.add_invoke_entry('AvatarPlayerStatusBar_onCreateUi', 'p0')
+    edit.add_line(' iget-object v10, p0, %s->m:%s' % (expr('$AvatarPlayerStatusBar'), expr('$Stage')))
+
+    edit.find_line(r' invoke-virtual \{p2, ([pv]\d+)\}, %s->addActor\(%s\)V' % (expr('$Stage'), expr('$Actor')))
+    edit.prepare_to_insert_before()
+    edit.add_invoke_entry('AvatarPlayerStatusBar_onStageAddActor', edit.vars[0])
+    edit.find_line(r' invoke-virtual \{p2, ([pv]\d+)\}, %s->addActor\(%s\)V' % (expr('$Stage'), expr('$Actor')))
+    edit.prepare_to_insert_before()
+    edit.add_invoke_entry('AvatarPlayerStatusBar_onStageAddActor', edit.vars[0])
+    edit.find_line(r' invoke-virtual \{p2, ([pv]\d+)\}, %s->addActor\(%s\)V' % (expr('$Stage'), expr('$Actor')))
+    edit.prepare_to_insert_before()
+    edit.add_invoke_entry('AvatarPlayerStatusBar_onStageAddActor', edit.vars[0])
+
+#    edit.prepare_to_insert()
+    edit.find_line(r' return-void', where='down')
+    edit.prepare_to_insert_before()
+    edit.add_invoke_entry('AvatarPlayerStatusBar_onCreatedUi', 'p0')
     edit.save()
 
     # invite nag reminder

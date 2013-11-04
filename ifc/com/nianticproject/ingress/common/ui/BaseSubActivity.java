@@ -1,6 +1,8 @@
 package com.nianticproject.ingress.common.ui;
 
-public abstract class BaseSubActivity implements SubActivity {
+import com.badlogic.gdx.InputMultiplexer;
+
+public abstract class BaseSubActivity extends InputMultiplexer implements SubActivity {
 
     public BaseSubActivity(String s) {
     }

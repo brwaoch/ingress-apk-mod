@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 import broot.ingress.mod.util.Config;
 import broot.ingress.mod.util.InventoryUtils;
@@ -13,18 +14,26 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.esotericsoftware.tablelayout.Cell;
 import com.nianticproject.ingress.NemesisActivity;
+import com.nianticproject.ingress.NemesisApplication;
+import com.nianticproject.ingress.content.CommsData;
+import com.nianticproject.ingress.common.CommChannel;
 import com.nianticproject.ingress.common.app.NemesisMemoryCache;
 import com.nianticproject.ingress.common.app.NemesisMemoryCacheFactory;
 import com.nianticproject.ingress.common.app.NemesisWorld;
 import com.nianticproject.ingress.common.assets.AssetFinder;
 import com.nianticproject.ingress.common.inventory.MenuControllerImpl;
+import com.nianticproject.ingress.common.scanner.ScannerActivity;
 import com.nianticproject.ingress.common.ui.BaseSubActivity;
 import com.nianticproject.ingress.common.ui.FormatUtils;
 import com.nianticproject.ingress.common.ui.elements.PortalInfoDialog;
+import com.nianticproject.ingress.common.ui.elements.AvatarPlayerStatusBar;
 import com.nianticproject.ingress.common.ui.widget.MenuTabId;
 import com.nianticproject.ingress.common.upgrade.PortalUpgradeUi;
 import com.nianticproject.ingress.gameentity.components.LocationE6;
@@ -100,7 +109,7 @@ public class Entry {
     }
 
     // At this point most stuff should be already initialized
-    public static void SubActiityApplicationLisener_onCreated() {
+    public static void SubActivityApplicationLisener_onCreated() {
         Mod.cache = (NemesisMemoryCache) NemesisMemoryCacheFactory.getCache();
         Mod.skin = Mod.world.getSubActivityManager().skin;
     }
@@ -145,6 +154,32 @@ public class Entry {
             variant = UiVariant.byName.get(variant.parent);
         }
         return null;
+    }
+
+    public static void ScannerActivity_onUpdateState(ScannerActivity activity) {
+//        if((System.currentTimeMillis() - Mod.lastTap > 1000*5) && Mod.statusBarIsVisible) {
+//            Mod.avatarPlayerStatusBar.stage.getRoot().clear();
+//            Mod.statusBarIsVisible = false;
+//        }
+    }
+
+    public static void AvatarPlayerStatusBar_onStageAddActor(Actor actor) {
+    }
+
+    public static void AvatarPlayerStatusBar_onCreateUi(AvatarPlayerStatusBar avatarPlayerStatusBar) {
+        Mod.avatarPlayerStatusBar = avatarPlayerStatusBar;
+        Mod.lastTap = System.currentTimeMillis();
+    }
+
+    public static void AvatarPlayerStatusBar_onCreatedUi(AvatarPlayerStatusBar avatarPlayerStatusBar) {
+    }
+
+    public static void ScannerTouchHandler_onTouchDown(float x, float y, int z) {
+        if(!Mod.statusBarIsVisible) {
+            Mod.avatarPlayerStatusBar.createUi(Mod.avatarPlayerStatusBar.skin, Mod.avatarPlayerStatusBar.stage);
+            Mod.lastTap = System.currentTimeMillis();
+            Mod.statusBarIsVisible = true;
+        }
     }
 
     public static void PortalInfoDialog_onStatsTableCreated(PortalInfoDialog dialog, Table t) {

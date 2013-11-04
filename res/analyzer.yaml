@@ -13,7 +13,11 @@ broot.ingress.mod.Entry:
     MenuController_onInit: [null, V, $MenuControllerImpl]
     AssetFinder_onInit: [null, V, $AssetFinder]
 
-    SubActiityApplicationLisener_onCreated: [null, V]
+    SubActivityApplicationLisener_onCreated: [null, V]
+
+    AvatarPlayerStatusBar_onStageAddActor: [null, V, $Actor]
+    AvatarPlayerStatusBar_onCreateUi: [null, V, $AvatarPlayerStatusBar]
+    AvatarPlayerStatusBar_onCreatedUi: [null, V, $AvatarPlayerStatusBar]
 
     MenuShowBtn_onClick: [null, Ljava/lang/Class;]
     MenuTopWidget_getTabs: [null, '$MenuTabId[]']
@@ -26,7 +30,9 @@ broot.ingress.mod.Entry:
     PortalInfoDialog_onPlayerLocationChanged: [null, V]
     ScannerStateManager_onEnablePortalVectors: [null, Z]
     PlayerModelUtils_onGetDefaultResonatorToDeploy: [null, Ljava/util/Map;, Ljava/util/TreeMap;]
+    ScannerActivity_onUpdateState: [null, V, $ScannerActivity]
     ScannerTouchHandler_shouldSwapTouchMenuButtons: [null, Z]
+    ScannerTouchHandler_onTouchDown: [null, V, F, F, I]
     ZoomInMode_shouldZoomIn: [null, Z]
     PortalInfoDialog_getOpenDelay: [null, F, F]
     GpsSensor_lockTimeout: [null, J]
@@ -37,9 +43,6 @@ broot.ingress.mod.Entry:
     ShieldShader_getRampTargetInvWidthY: [null, F, F]
     HackAnimationStage_getTotalTime: [null, F, F]
     HackController_shouldShowAnimation: [null, Z]
-    ClientFeatureKnobBundle_getEnableNewHackAnimations: [null, Z, Z]
-    ClientFeatureKnobBundle_getEnableNewDeployUi: [null, Z, Z]
-    ClientFeatureKnobBundle_getEnableCommsAlertsTab: [null, Z, Z]
     InventoryItemRenderer_shouldRotate: [null, Z]
     InventoryItemRenderer_simplifyItems: [null, Z]
     ItemActionHandler_recycleAnimationsEnabled: [null, Z]
@@ -56,11 +59,6 @@ broot.ingress.mod.Entry:
     CommsAdapter_getDateFormat: [null, $SimpleDateFormat]
 
 ### MODEL
-
-com.nianticproject.ingress.common.CommChannel:
-  is_enum: true
-  
-  find_by_string: '" is an unknown channel ID"'
 
 com.nianticproject.ingress.common.model.GameState:
   is_real_name: true
@@ -185,9 +183,12 @@ com.nianticproject.ingress.NemesisActivity:
 com.nianticproject.ingress.common.app.NemesisWorld:
   methods:
     getPlayerModel: [b, $PlayerModel]
-    getSubActivityManager: [n, $SubActivityManager]
+    getSubActivityManager: [m, $SubActivityManager]
 
-  find_by_string: "PlayerModel is not in training mode"
+  find:
+    - [by_string, false, true, "PlayerModel is not in training mode"]
+    - [by_method, false, true, getPlayerModel]
+    - [by_method, false, true, getSubActivityManager]
 
 com.nianticproject.ingress.common.app.NemesisCache:
   methods:
@@ -270,7 +271,9 @@ com.nianticproject.ingress.common.ui.UiRenderer:
   methods:
     addUiLayer: [a, V, $UiLayer]
 
-  find_by_string: "UI Render"
+  find: 
+    - [by_string, false, true, "UI Render"]
+    - [by_method, false, true, addUiLayer]
 
 com.nianticproject.ingress.common.ui.mode.UiMode:
   methods:
@@ -371,7 +374,20 @@ com.nianticproject.ingress.common.ui.elements.OldPlayerStatusBar:
   find_by_string: "%d AP"
 
 com.nianticproject.ingress.common.ui.elements.AvatarPlayerStatusBar:
-  find_by_string: '"scanner-ap-progress-neutral"'
+  fields:
+    contentGroup: [o, $Group]
+    skin: [n, $Skin]
+    stage: [m, $Stage]
+
+  methods:
+    createUi: [a, V, $Skin, $Stage]
+
+  find:
+    - [by_field, false, true, contentGroup]
+    - [by_field, false, true, skin]
+    - [by_field, false, true, stage]
+    - [by_method, false, true, createUi]
+    - [by_string, false, true, '"scanner-ap-progress-neutral"']
 
 com.nianticproject.ingress.common.ui.elements.AvatarPlayerStatusBar_OpsButtonListener:
   methods:
@@ -436,7 +452,12 @@ com.nianticproject.ingress.common.ui.widget.MenuTopWidget:
 ### SCANNER
 
 com.nianticproject.ingress.common.scanner.ScannerActivity:
-  find_by_string: '"ScannerActivity"'
+  methods:
+    updateState: [e, V, $ScannerActivity]
+
+  find:
+    - [by_string, false, true, '"ScannerActivity"']
+#    - [by_method, false, true, updateState]
 
 com.nianticproject.ingress.common.scanner.PortalKeyScannerActivity:
   find_by_string: PortalKeyScannerActivity
@@ -470,7 +491,7 @@ com.nianticproject.ingress.common.scanner.visuals.shaders.ShieldShader:
   find_by_string: '"u_rampTargetInvWidth"'
 
 com.nianticproject.ingress.common.scanner.visuals.ScannerDestinationVisuals:
-  find_by_string: "CLEAR"
+  find_by_string: ScannerDestinationVisuals
 
 com.nianticproject.ingress.common.scanner.visuals.HackController:
   methods:
@@ -490,7 +511,12 @@ com.nianticproject.ingress.common.scanner.visuals.HackAnimationStage:
 com.nianticproject.ingress.common.scanner.modes.ScannerTouchHandler:
   methods:
     longPress: [longPress, Z, F, F]
-  find_by_string: '0x3ea3d70a'
+    touchDown: [touchDown, Z, F, F, I]
+
+  find:
+    - [by_method, false, true, longPress]
+    - [by_method, false, true, touchDown]
+    - [by_string, false, true, '0x3ea3d70a']
 
 com.nianticproject.ingress.common.scanner.modes.ZoomInMode:
   super: $UiMode
@@ -675,26 +701,19 @@ com.nianticproject.ingress.common.passcode.PasscodeTabActivity:
   find_by_string: PasscodeTabActivity
 
 ### COMM
-com.nianticproject.ingress.ui.CommsAdapter:
+com.nianticproject.ingress.comm.CommStreamAdapter:
   methods:
-    bindView: [a, V, $View, $Context, $Cursor]
-
-  find_by_string: "MMM dd"
-
-com.nianticproject.ingress.content.CommsLoader:
-  find_by_string: "CommsLoader.deserializeNoneOnFail"
-
-com.nianticproject.ingress.content.CommsData:
-  methods:
-    addMessage: [a, V, $Context, $CommChannel, $String, '[B', Z, J, I, $String, I]
+    getView: [getView, $View, I, $View, $ViewGroup]
 
   find:
-    - [by_string, false, true, "Massive plext in CommsData"]
-    - [by_method, false, true, addMessage]
-
+    - [by_string, false, true, "MMM dd"]
+    - [by_method, false, true, getView]
 
 ### FRAMEWORK
 android.view.View:
+  is_real_name: true
+
+android.view.ViewGroup:
   is_real_name: true
 
 android.content.Context:
@@ -714,13 +733,19 @@ com.google.common.geometry.S2LatLng:
 
 ### LIBGDX
 
-com.badlogic.gdx.scenes.scene2d.ui.Table:
+com.badlogic.gdx.scenes.scene2d.Actor:
+  is_real_name: true
+
+com.badlogic.gdx.scenes.scene2d.Group:
+  is_real_name: true
+
+com.badlogic.gdx.scenes.scene2d.Stage:
   is_real_name: true
 
 com.badlogic.gdx.scenes.scene2d.ui.Skin:
   is_real_name: true
 
-com.badlogic.gdx.scenes.scene2d.Stage:
+com.badlogic.gdx.scenes.scene2d.ui.Table:
   is_real_name: true
 
 com.badlogic.gdx.ApplicationListener:
