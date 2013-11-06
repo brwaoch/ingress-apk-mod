@@ -12,14 +12,16 @@ def main():
         f=`grep apkFileName $MOD_HOME/app/apktool.yml`
         f=${f:13:${#f}-17}
 
+        mkdir -p release
+
         $MOD_HOME/bin/clean_app.py
         $MOD_HOME/bin/analyze.py release
 
         $MOD_HOME/bin/main.py
         $MOD_HOME/bin/copy_assets.py
         $MOD_HOME/bin/build.py release
-        rm -f $MOD_HOME/$f-broot-$version.apk
-        zipalign 4 $MOD_HOME/app/dist/$f.apk $MOD_HOME/$f-broot-$version.apk
+        rm -f $MOD_HOME/release/$f-broot-$version.apk
+        zipalign 4 $MOD_HOME/app/dist/$f.apk $MOD_HOME/release/$f-broot-$version.apk
 
 
         $MOD_HOME/bin/clean_app.py
@@ -28,8 +30,8 @@ def main():
         $MOD_HOME/bin/copy_assets.py
         $MOD_HOME/bin/mute.py
         $MOD_HOME/bin/build.py release
-        rm -f $MOD_HOME/$f-broot-$version-mute.apk
-        zipalign 4 $MOD_HOME/app/dist/$f.apk $MOD_HOME/$f-broot-$version-mute.apk
+        rm -f $MOD_HOME/release/$f-broot-$version-mute.apk
+        zipalign 4 $MOD_HOME/app/dist/$f.apk $MOD_HOME/release/$f-broot-$version-mute.apk
     ''' % config['version'], shell=True, executable='/bin/bash')
 
 
