@@ -96,6 +96,8 @@ class Analyzer:
         self.analyze_enums()
 
     def auto_identify_class(self, cls, max_unknown_pkg):
+        print('Looking for class %s.%s... ' % (".".join(cls.orig_pkg), cls.orig_cls))
+
         if cls.is_identified() or not cls.raw['find']:
             return False, -1
 
@@ -144,6 +146,7 @@ class Analyzer:
         parts = obf_names[0][1:-1].split('/')
         cls.obf_pkg = parts[:-1]
         cls.obf_cls = parts[-1]
+        print('Found %s.%s: %s.%s ' % (".".join(cls.orig_pkg), cls.orig_cls, ".".join(cls.obf_pkg), cls.obf_cls))
         return True, -1
 
     def analyze_enums(self):

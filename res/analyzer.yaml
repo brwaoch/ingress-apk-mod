@@ -516,11 +516,13 @@ com.nianticproject.ingress.common.scanner.modes.PortalDialogMode:
 com.nianticproject.ingress.common.scanner.modes.RepeatedActionUi:
   super: $UiLayer
   methods:
-    onPrimaryAction: [a, V]
+#    onPrimaryAction: [a, V]
     onDone: [b, V]
+
   find:
-    - [by_string, false, true, DONE]
-    - [by_string, false, true, primary-action]
+    - [by_string, false, true, '"ap-progress-meter-neutral"']
+    - [by_string, false, true, '"primary-action"']
+    - [by_method, false, true, onDone]
 
 com.nianticproject.ingress.common.ui.elements.PortalInfoDialog:
   super: $UiLayer
@@ -531,7 +533,10 @@ com.nianticproject.ingress.common.ui.elements.PortalInfoDialog:
   methods:
     onPlayerLocationChanged: [l, V]
 
-  find_by_string: "Unknown Portal"
+  find:
+    - [by_string, false, true, '"portal-stats"']
+    - [by_method, false, true, onPlayerLocationChanged]
+    - [by_field, false, true, portalComponent]
 
 ### PORTAL UPGRADE
 
@@ -621,8 +626,7 @@ com.nianticproject.ingress.common.inventory.ui.ItemDetailsUiCreator:
 
 com.nianticproject.ingress.common.inventory.ui.BaseItemDetailsUiCreator:
   find:
-    - [by_string, false, true, '"DROP"']
-    - [by_string, false, true, '"RECYCLE"']
+    - [by_string, false, true, '"RecycleEnergyGainListener"']
 
 com.nianticproject.ingress.common.inventory.ui.PowerCubeDetailsUiCreator:
   methods:
@@ -630,7 +634,6 @@ com.nianticproject.ingress.common.inventory.ui.PowerCubeDetailsUiCreator:
 
   find:
     - [by_string, false, true, '" XM"']
-    - [by_string, false, true, '"USE"']
 
 com.nianticproject.ingress.common.inventory.ItemActionHandler:
   methods:
@@ -660,7 +663,10 @@ com.nianticproject.ingress.common.intel.IntelActivity:
   find_by_string: IntelActivity
 
 com.nianticproject.ingress.common.intel.IntelActivityUi:
-  find_by_string: "Mind Units:"
+  find:
+    - [by_string, false, true, '"score-resistance-background"']
+    - [by_string, false, true, '"..."']
+    - [by_string, false, true, '"%"']
 
 com.nianticproject.ingress.common.mission.MissionListActivity:
   find_by_string: MissionListActivity
@@ -672,7 +678,7 @@ com.nianticproject.ingress.common.device.DeviceActivity:
   find_by_string: DeviceActivity
 
 com.nianticproject.ingress.common.device.DeviceActivityUi:
-  find_by_string: Go to the help center
+  find_by_string: '"Email"'
 
 com.nianticproject.ingress.common.recruit.RecruitActivity:
   find_by_string: RecruitActivity
