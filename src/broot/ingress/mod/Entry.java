@@ -22,8 +22,6 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.esotericsoftware.tablelayout.Cell;
 import com.nianticproject.ingress.NemesisActivity;
 import com.nianticproject.ingress.NemesisApplication;
-import com.nianticproject.ingress.content.CommsData;
-import com.nianticproject.ingress.common.CommChannel;
 import com.nianticproject.ingress.common.app.NemesisMemoryCache;
 import com.nianticproject.ingress.common.app.NemesisMemoryCacheFactory;
 import com.nianticproject.ingress.common.app.NemesisWorld;

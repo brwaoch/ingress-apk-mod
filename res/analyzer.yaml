@@ -374,9 +374,7 @@ com.nianticproject.ingress.common.ui.widget.MenuTabId:
   methods:
     getText2: [a, $String]
 
-  find:
-    - [by_method, false, true, getText2]
-    - [by_string, false, true, '" \[%d\]"']
+  find_by_string: '" \[%d\]"'
 
 com.nianticproject.ingress.common.ui.elements.OldPlayerStatusBar:
   find_by_string: "%d AP"
@@ -560,10 +558,12 @@ com.nianticproject.ingress.common.ui.elements.PortalInfoDialog:
 
   methods:
     onPlayerLocationChanged: [l, V]
+    createInfoTable: [i, $Actor]
 
   find:
     - [by_string, false, true, '"portal-stats"']
     - [by_method, false, true, onPlayerLocationChanged]
+    - [by_method, false, true, createInfoTable]
     - [by_field, false, true, portalComponent]
 
 ### PORTAL UPGRADE
