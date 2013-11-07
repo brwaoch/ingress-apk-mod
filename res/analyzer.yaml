@@ -106,7 +106,9 @@ com.nianticproject.ingress.gameentity.components.ItemRarity:
 
 com.nianticproject.ingress.gameentity.components.FlipCardType:
   is_enum: true
-  find_by_string: ADA Refactor
+  find:
+    - [by_string, false, true, '"ADA"']
+    - [by_string, false, true, '"JARVIS"']
 
 ### SHARED
 
@@ -119,7 +121,11 @@ com.nianticproject.ingress.shared.ItemType:
 
 com.nianticproject.ingress.shared.Faction:
   is_enum: true
-  find_by_string: '"Enlightened"'
+
+  find:
+    - [by_string, false, true, '"RESISTANCE"']
+    - [by_string, false, true, '"ALIENS"']
+    - [by_string, false, true, '"NEUTRAL"']
 
 com.nianticproject.ingress.shared.ClientType:
   is_enum: true
@@ -368,7 +374,9 @@ com.nianticproject.ingress.common.ui.widget.MenuTabId:
   methods:
     getText2: [a, $String]
 
-  find_by_string: RECRUIT
+  find:
+    - [by_method, false, true, getText2]
+    - [by_string, false, true, '" \[%d\]"']
 
 com.nianticproject.ingress.common.ui.elements.OldPlayerStatusBar:
   find_by_string: "%d AP"
@@ -686,7 +694,7 @@ com.nianticproject.ingress.common.mission.MissionListActivity:
   find_by_string: MissionListActivity
 
 com.nianticproject.ingress.common.mission.MissionListActivityUi:
-  find_by_string: View Briefing
+  find_by_string: '"mission-list"'
 
 com.nianticproject.ingress.common.device.DeviceActivity:
   find_by_string: DeviceActivity
