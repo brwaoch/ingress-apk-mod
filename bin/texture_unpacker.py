@@ -130,7 +130,7 @@ class Unpacker:
 
             for image in page.images:
                 for k, v in image.params.items():
-                    if k in ('xy', 'size', 'orig', 'offset', 'split'):
+                    if k in ('xy', 'size', 'orig', 'offset', 'split', 'pad'):
                         pass
                     elif k == 'rotate':
                         if v:
