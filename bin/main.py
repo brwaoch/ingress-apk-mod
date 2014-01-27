@@ -203,10 +203,11 @@ def main():
 
     #simplify inventory item rendering
     edit = edit_cls('InventoryItemRenderer')
-    edit.find_line('.*Lcom/badlogic/gdx/graphics/glutils/ShaderProgram;->end.*')
-    edit.prepare_to_insert()
-    edit.add_invoke_entry('InventoryItemRenderer_simplifyItems', ret='v0')
-    edit.add_line(' if-nez v0, :skip_item_shader')
+    edit.find_line(' const-string/jumbo v1, "u_altColor"')
+    edit.find_line(' invoke-virtual .*Lcom/badlogic/gdx/graphics/glutils/ShaderProgram;', where='up')
+    edit.prepare_to_insert_before()
+    edit.add_invoke_entry('InventoryItemRenderer_simplifyItems', ret='v2')
+    edit.add_line(' if-nez v2, :skip_item_shader')
     edit.find_line('.*Lcom/badlogic/gdx/graphics/glutils/ShaderProgram;->end.*', where='down')
     edit.prepare_to_insert()
     edit.add_line(' :skip_item_shader')
@@ -343,14 +344,6 @@ def main():
     edit.find_line(r' return-void', where='down')
     edit.prepare_to_insert_before()
     edit.add_invoke_entry('AvatarPlayerStatusBar_onCreatedUi', 'p0')
-    edit.save()
-
-    edit = edit_cls('ItemRewardDialogElement')
-    edit.mod_method_def('getCount', 'public')
-    edit.find_method_def('getCaption')
-    edit.find_line(r' return-object v0', where='down')
-    edit.prepare_to_insert_before()
-    edit.add_invoke_entry('ItemRewardDialogElement_getCaption', 'p0, v0', 'v0')
     edit.save()
 
     edit = edit_cls('TutorialDialogNextListener')

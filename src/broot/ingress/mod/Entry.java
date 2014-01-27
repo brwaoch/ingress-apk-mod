@@ -43,7 +43,6 @@ import com.nianticproject.ingress.common.scanner.ScannerStateManager;
 import com.nianticproject.ingress.common.ui.BaseSubActivity;
 import com.nianticproject.ingress.common.ui.FormatUtils;
 import com.nianticproject.ingress.common.ui.elements.AvatarPlayerStatusBar;
-import com.nianticproject.ingress.common.ui.elements.ItemRewardDialogElement;
 import com.nianticproject.ingress.common.ui.elements.PortalInfoDialog;
 import com.nianticproject.ingress.common.ui.widget.MenuTabId;
 import com.nianticproject.ingress.gameentity.components.ItemRarity;
@@ -198,11 +197,6 @@ public class Entry {
 	}
 
 	public static void AvatarPlayerStatusBar_onCreatedUi(AvatarPlayerStatusBar avatarPlayerStatusBar) {
-	}
-
-	public static String ItemRewardDialogElement_getCaption(ItemRewardDialogElement element, String org) {
-		final int count = ItemRewardDialogElement.getCount(element);
-		return count > 1 ? String.format("%s [x%d]", org, count) : org;
 	}
 
 	public static void ScannerTouchHandler_onTouchDown(float x, float y, int z) {

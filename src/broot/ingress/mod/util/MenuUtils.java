@@ -9,7 +9,7 @@ import broot.ingress.mod.util.Config.ItemsTab;
 import broot.ingress.mod.util.Config.Pref;
 
 import com.nianticproject.ingress.common.device.DeviceActivity;
-import com.nianticproject.ingress.common.intel.IntelActivity;
+import com.nianticproject.ingress.common.regionscore.GlobalRegionScoreActivity;
 import com.nianticproject.ingress.common.inventory.ItemsActivity;
 import com.nianticproject.ingress.common.missions.MissionListActivity;
 import com.nianticproject.ingress.common.passcode.PasscodeTabActivity;

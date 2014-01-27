@@ -19,8 +19,6 @@ broot.ingress.mod.Entry:
     AvatarPlayerStatusBar_onCreateUi: [null, V, $AvatarPlayerStatusBar]
     AvatarPlayerStatusBar_onCreatedUi: [null, V, $AvatarPlayerStatusBar]
 
-    ItemRewardDialogElement_getCaption: [null, $String, $ItemRewardDialogElement, $String]
-
     MenuShowBtn_onClick: [null, Ljava/lang/Class;]
     MenuTopWidget_getTabs: [null, '$MenuTabId[]']
     MenuTabId_onToString: [null, $String, $MenuTabId]
@@ -200,7 +198,7 @@ com.nianticproject.ingress.NemesisActivity:
 com.nianticproject.ingress.common.ComponentManager:
   methods:
     getPlayerModel: [a, $PlayerModel]
-    getSubActivityManager: [j, $SubActivityManager]
+    getSubActivityManager: [i, $SubActivityManager]
 
   find:
     - [by_string, false, true, "playerModel not initialized."]
@@ -361,7 +359,7 @@ com.nianticproject.ingress.common.ui.SubActivityManager:
 com.nianticproject.ingress.common.ui.BaseSubActivity:
   methods:
     getName: [d, $String]
-    getRenderer: [L, $UiRenderer]
+    getRenderer: [M, $UiRenderer]
     onResume: [a, V]
     onPause: [e, V]
 
@@ -428,26 +426,6 @@ com.nianticproject.ingress.common.ui.elements.AvatarPlayerStatusBar_AvatarListen
     - [by_method, false, true, init]
     - [by_method, false, true, clicked]
     - [by_string, false, true, $MyProfileActivity]
-
-com.nianticproject.ingress.common.ui.elements.ItemRewardDialog:
-  is_real_name: true
-
-  methods:
-    createItemsTable: [a, $Table, $Skin, $Stage, I]
-
-com.nianticproject.ingress.common.ui.elements.ItemRewardDialogElement:
-  fields:
-    count: [b, I]
-    caption: [d, $String]
-
-  methods:
-    getCaption: [f, $String, $ItemRewardDialogElement]
-    getCount: [g, I, $ItemRewardDialogElement]
-
-  find:
-    - [by_string, false, true, '"Unknown media"']
-    - [by_field, false, true, count]
-    - [by_field, false, true, caption]
 
 com.nianticproject.ingress.common.ui.widget.ActionButton:
   is_real_name: true
@@ -536,7 +514,7 @@ com.nianticproject.ingress.common.scanner.visuals.ScannerDestinationVisuals:
 com.nianticproject.ingress.common.scanner.visuals.HackController:
   methods:
     animationsIsDone: [a, Z, F]
-  find_by_string: '"HackController.getItems"'
+  find_by_string: '"HackController.itemsReceiver"'
 
 com.nianticproject.ingress.common.scanner.visuals.HackAnimationStage:
   methods:
@@ -638,10 +616,10 @@ com.nianticproject.ingress.common.inventory.ui.InventoryItemRenderer:
 com.nianticproject.ingress.common.inventory.ui.IndistinguishableItems:
   methods:
     getType: [a, $ItemType]
-    getLevel: [e, I]
-    getRarity: [d, $ItemRarity]
-    getCount: [g, I]
-    getEntity: [h, $GameEntity]
+    getLevel: [f, I]
+    getRarity: [e, $ItemRarity]
+    getCount: [h, I]
+    getEntity: [i, $GameEntity]
 
     fromItemsByPlayerInfo: [a, Ljava/util/List;, $PlayerModel, Ljava/util/Collection;]
 
@@ -726,11 +704,8 @@ com.nianticproject.ingress.common.space2face.Space2FaceActivity:
 com.nianticproject.ingress.common.missions.ui.MissionScanner:
   find_by_string: MissionScanner
 
-com.nianticproject.ingress.common.intel.IntelActivity:
-  find_by_string: IntelActivity
-
-com.nianticproject.ingress.common.intel.IntelActivityUi:
-  find_by_string: "Mind Units:"
+com.nianticproject.ingress.common.regionscore.GlobalRegionScoreActivity:
+  find_by_string: GlobalRegionScoreActivity
 
 com.nianticproject.ingress.common.missions.MissionListActivity:
   find_by_string: MissionListActivity
