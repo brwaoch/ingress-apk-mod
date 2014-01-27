@@ -68,6 +68,12 @@ broot.ingress.mod.Entry:
     TutorialDialogStyle_getPadTop: [null, I, I]
     TutorialDialog_onCreateUi: [null, V, $TutorialDialog, Ljava/util/List;]
 
+o4kapuk.ingress.i18n.Translate:
+  is_real_name: true
+
+  methods:
+    t: [t, $CharSequence, $CharSequence]
+
 ### MODEL
 
 com.nianticproject.ingress.common.model.GameState:
@@ -748,6 +754,7 @@ com.nianticproject.ingress.common.passcode.PasscodeTabActivity:
 com.nianticproject.ingress.comm.CommStreamAdapter:
   methods:
     getView: [getView, $View, I, $View, $ViewGroup]
+#    getItem: [getItem, $Object, I]
 
   find:
     - [by_string, false, true, "MMM dd"]
@@ -777,6 +784,13 @@ com.google.common.geometry.S2LatLng:
 
 ### LIBGDX
 
+com.badlogic.gdx.utils.StringBuilder:
+  is_real_name: true
+
+  methods:
+    append: [append, $StringBuilder, $CharSequence]
+    append__1: [append, $StringBuilder, $StringBuilder]
+
 com.badlogic.gdx.scenes.scene2d.Actor:
   is_real_name: true
 
@@ -788,6 +802,13 @@ com.badlogic.gdx.scenes.scene2d.Stage:
 
 com.badlogic.gdx.scenes.scene2d.InputEvent:
   is_real_name: true
+
+com.badlogic.gdx.scenes.scene2d.ui.Label:
+  is_real_name: true
+
+  methods:
+    init: [<init>, V, $CharSequence, Lcom/badlogic/gdx/scenes/scene2d/ui/Label$LabelStyle;]
+    setText: [setText, V, $CharSequence]
 
 com.badlogic.gdx.scenes.scene2d.ui.Skin:
   is_real_name: true
@@ -891,7 +912,13 @@ com.esotericsoftware.tablelayout.Value$TableValue:
 
 ### JAVA
 
+java.lang.Object:
+  is_real_name: true
+
 java.lang.String:
+  is_real_name: true
+
+java.lang.CharSequence:
   is_real_name: true
 
 java.text.SimpleDateFormat:

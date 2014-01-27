@@ -21,6 +21,10 @@
     <methods>;
 }
 
+-keep,allowobfuscation class o4kapuk.ingress.i18n.Translate {
+    <methods>;
+}
+
 # Keep - Applications. Keep all application classes, along with their 'main'
 # methods.
 -keepclasseswithmembers public class * {

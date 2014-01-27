@@ -18,7 +18,7 @@ class Analyzer:
         self.obj = ObjContext()
 
         self.load()
-        self.prepare_entry_object()
+        self.prepare_entry_objects()
         self.auto_analyze()
         self.check_if_found()
         self.warn_about_unknown()
@@ -46,8 +46,9 @@ class Analyzer:
                     k = k[6:]
                 find.append([k, not_, multi] + (v if isinstance(v, list) else [v]))
 
-    def prepare_entry_object(self):
+    def prepare_entry_objects(self):
         cls = self.obj.get_cls_for_name('Entry')
+        t_cls = self.obj.get_cls_for_name('Translate')
         if self.release:
             cls.obf_pkg = []
             cls.obf_cls = 'a'
@@ -55,6 +56,8 @@ class Analyzer:
                 if not o[0]:
                     n1, n2 = divmod(i, 26)
                     o[0] = ('' if not n1 else chr(96 + n1)) + chr(97 + n2)
+            t_cls.obf_pkg = []
+            t_cls.obf_cls = 'b'
         else:
             for name, o in cls.fields.items():
                 if not o[0]:
@@ -65,7 +68,7 @@ class Analyzer:
 
     def auto_analyze(self):
         self.pkg = PkgMap()
-        for cls in filter(lambda cls: cls.is_identified() and cls.orig_pkg[0] != 'broot', self.obj.list_classes()):
+        for cls in filter(lambda cls: cls.is_identified() and cls.orig_pkg[0] != 'broot' and cls.orig_pkg[0] != 'o4kapuk', self.obj.list_classes()):
             self.pkg.add_identified_class(cls)
 
         changed = True
