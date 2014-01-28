@@ -70,7 +70,8 @@ o4kapuk.ingress.i18n.Translate:
   is_real_name: true
 
   methods:
-    t: [t, $CharSequence, $CharSequence]
+    t: [t, $CharSequence, $Label, $CharSequence]
+    v: [v, V, $Object]
 
 ### MODEL
 

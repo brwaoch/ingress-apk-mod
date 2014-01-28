@@ -18,7 +18,7 @@ def main():
         $MOD_HOME/bin/analyze.py release
 
         $MOD_HOME/bin/main.py
-        #$MOD_HOME/bin/i18n.py
+        $MOD_HOME/bin/i18n.py
         $MOD_HOME/bin/copy_assets.py
         $MOD_HOME/bin/build.py release
         rm -f $MOD_HOME/release/$f/$f-broot-$version.apk
@@ -28,7 +28,7 @@ def main():
         $MOD_HOME/bin/clean_app.py
 
         $MOD_HOME/bin/main.py
-        #$MOD_HOME/bin/i18n.py
+        $MOD_HOME/bin/i18n.py
         $MOD_HOME/bin/copy_assets.py
         $MOD_HOME/bin/mute.py
         $MOD_HOME/bin/build.py release

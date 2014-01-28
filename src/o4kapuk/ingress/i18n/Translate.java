@@ -2,6 +2,8 @@ package o4kapuk.ingress.i18n;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Json;
 
 import android.util.Log;
@@ -39,24 +41,31 @@ public class Translate {
 					final Pattern p = Pattern.compile(orgRe);
 
 					dictRe.put(p, t);
-//					Log.v("translate", "Regex found: " + orgRe);
 				}
 			}
 		}
 	}
 
-	public static CharSequence t(CharSequence org)
+	public static CharSequence t(Label label, CharSequence org)
 	{
+		if(org == "NAVIGATE") {
+			Group g = label.getParent();
+			if(g == null) {
+				Log.v("translate", "group is null");
+			} else {
+				Log.v("translate", g.toString());
+			}
+			Thread.dumpStack();
+//			Log.v("translate", "name:" + n != null ? n : "null" + ", group: " + g != null ? g.toString() : "null");
+		}
+
 		if(dict.containsKey(org)) {
-//		Log.v("translate", org.toString() + " -> " + dict.get(org));
-//			Thread.dumpStack();
 			return dict.get(org);
 		}
 
 		for(Map.Entry<Pattern, String> entry : dictRe.entrySet()) {
 			Matcher matcher = entry.getKey().matcher(org);
 			if(matcher.matches()) {
-//				Log.v("translate", "Regex match: " + org);
 				final List<String> matches = new ArrayList<String>();
 
 				for(int i = 1; i <= matcher.groupCount(); i++) {
@@ -76,5 +85,10 @@ public class Translate {
 
 //		Log.v("translate", "Not found: " + org.toString());
 		return org;
+	}
+
+	public static void v(Object obj)
+	{
+		Log.v("translate", obj.toString());
 	}
 }
