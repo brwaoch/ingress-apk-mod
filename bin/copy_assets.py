@@ -14,6 +14,9 @@ def copy_assets(names=None):
             return
         names = os.listdir(dir1)
 
+    if os.path.isdir('%s/build/assets/fonts' % HOME):
+        shutil.rmtree('%s/app/assets/fonts' % HOME)
+        shutil.copytree('%s/build/assets/fonts' % HOME, '%s/app/assets/fonts' % HOME)
     for n1 in names:
         dir2 = dir1 + '/' + n1
         for n2 in os.listdir(dir2):

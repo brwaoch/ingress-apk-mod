@@ -19,6 +19,11 @@ def main(font):
         repack('', (20, 32, 40, 48), font)
         repack('-xhdpi', (33, 60, 72, 85), font)
         repack('-xxhdpi', (50, 85, 103, 121), font)
+        if os.path.exists('res/fonts/%s/coda.ttf' % font):
+            if not os.path.exists('build/assets/fonts'):
+                os.makedirs('build/assets/fonts')
+            shutil.copy('res/fonts/%s/coda.ttf' % font, 'build/assets/fonts/coda.ttf')
+
     finally:
         os.chdir(cwd)
 
