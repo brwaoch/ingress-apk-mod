@@ -110,7 +110,7 @@ public class Config {
 		Vibration(1, "Vibrate"),
 		KeepScreenOn(0, "Keep screen on"),
 		ChangePortalInfoDialog(0, "Modify portal info"),
-		EnablePowerCubesRecycle(1, "Allow Cubes recyling"),
+		EnablePowerCubesRecycle(1, "Allow Cubes recycling"),
 		AllowModRecycle(0, "Allow Mods recycling", AllowModRecycle.class),
 		IsPrivacyOn(0, "Privacy"),
 		NeedInviteNagBlock(0, "Block invite nag"),
