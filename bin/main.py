@@ -169,6 +169,19 @@ def main():
     edit.add_invoke_entry('HackController_shouldShowAnimation', '', 'v0')
     edit.add_ret_if_result(False)
     edit.save()
+    edit = edit_cls('HackController')
+    edit.find_line(r' check-cast ([pv]\d+), Lcom/nianticproject/ingress/gameentity/components/Portal;')
+    regResult = edit.vars[0]
+    edit.prepare_to_insert()
+    edit.add_line(r' invoke-interface {%s}, %s' % (regResult, expr('${Component->getEntityGuid()}')));
+    edit.add_line(r' move-result-object v1')
+    edit.add_invoke_entry('HackController_setPortalGuid', 'v1')
+    edit.find_line(r' invoke-static {[pv]\d+, [pv]\d+}, %s->[^\(]+\(Ljava/util/Collection;Ljava/util/Collection;\)Ljava/util/List;' % expr_type('$IndistinguishableItems'))
+    edit.find_line(r' move-result-object ([pv]\d+)', where='down')
+    regResult = edit.vars[0]
+    edit.prepare_to_insert()
+    edit.add_invoke_entry('HackController_onHackResult', regResult, '')
+    edit.save()
     
     edit = edit_cls('HackAnimationStage')
     edit.find_method_def('getTotalTime')

@@ -47,6 +47,7 @@ import com.nianticproject.ingress.common.ui.elements.PortalInfoDialog;
 import com.nianticproject.ingress.common.ui.widget.MenuTabId;
 import com.nianticproject.ingress.gameentity.components.ItemRarity;
 import com.nianticproject.ingress.gameentity.components.LocationE6;
+import com.nianticproject.ingress.gameentity.components.Captured;
 import com.nianticproject.ingress.shared.ClientType;
 import com.nianticproject.ingress.shared.location.LocationUtils;
 
@@ -106,6 +107,14 @@ public class Entry {
 
 	public static boolean HackController_shouldShowAnimation() {
 		return Config.getBoolean(Pref.HackAnimEnabled);
+	}
+
+	public static void HackController_onHackResult(final List hackResult) {
+		Mod.HacksTimer.registerHackAtTime(Mod.HackController_portalGuid, System.currentTimeMillis());
+	}
+
+	public static void HackController_setPortalGuid(final String portalGuid) {
+		Mod.HackController_portalGuid = portalGuid;
 	}
 
 	public static boolean InventoryItemRenderer_shouldRotate() {
@@ -171,6 +180,7 @@ public class Entry {
 		pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
 		Mod.ksoWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "Ingress - Keep Screen ON");
 		Mod.updateKeepScreenOn();
+		Mod.HacksTimer.load();
 	}
 
 	public static void NemesisActivity_onOnPause(final NemesisActivity activity) {
@@ -179,6 +189,7 @@ public class Entry {
 				Mod.ksoWakeLock.release();
 			}
 		}
+		Mod.HacksTimer.save();
 	}
 
 	public static void ScannerActivity_onUpdateState(ScannerActivity activity) {
@@ -274,6 +285,50 @@ public class Entry {
 		t.row();
 		t.add(new Label("Dist.:", style)).left();
 		t.add(portalInfoDistLabel = new Label("", style)).left().expandX();
+
+		final Captured portalCaptured = ((Captured)dialog.portalComponent.getEntity().getComponent(Captured.class));
+		final long capturedTime = portalCaptured != null ? portalCaptured.getCapturedTime() : 0;
+		final long hackTime;
+		if (Config.getBoolean(Pref.PortalInfoDialogShowsHacksTimer)) {
+			hackTime = Mod.HacksTimer.getLastHackTime(dialog.portalComponent.getEntityGuid());
+		} else {
+			hackTime = 0;
+		}
+		if (capturedTime > 0 || hackTime > 0) {
+			t.row();
+		}
+		final long now = System.currentTimeMillis();
+		if (capturedTime > 0 && hackTime > 0) {
+				t.add(new Label("C:" + fmtTimeAgo(now - capturedTime), style)).left();
+				t.add(new Label("H:" + fmtTimeAgo(now - hackTime), style)).left().expandX();
+		} else if (capturedTime > 0) {
+				t.add(new Label("Capt.:", style)).left();
+				t.add(new Label(fmtTimeAgo(now - capturedTime), style)).left().expandX();
+		} else if (hackTime > 0) {
+				t.add(new Label("Hack.:", style)).left();
+				t.add(new Label(fmtTimeAgo(now - hackTime), style)).left().expandX();
+		}
+	}
+
+	private static String fmtTimeAgo(final long ago) {
+		final String agoStr;
+		long tmp;
+		if (ago < 0) {
+			agoStr = "-" + fmtTimeAgo(-ago); // user clock is not in sync with server clock
+		} else if (ago < 1000L) {
+			agoStr = ago + "ms";
+		} else if (ago < 1000L*60) {
+			agoStr = (ago / 1000L) + "s";
+		} else if (ago < 1000L*60*60) {
+			agoStr = (ago / (1000L*60)) + "m" + ((tmp = (ago % (1000L*60) / 1000L)) != 0 ? (tmp + "s") : "");
+		} else if (ago < 1000L*60*60*24) {
+			agoStr = (ago / (1000L*60*60)) + "h" + ((tmp = (ago % (1000L*60*60) / (1000L*60))) != 0 ? (tmp + "m") : "");
+		} else if (ago < 1000L*60*60*24*365) {
+			agoStr = (ago / (1000L*60*60*24)) + "d" + ((tmp = (ago % (1000L*60*60*24) / (1000L*60*60))) != 0 ? (tmp + "h") : "");
+		} else {
+			agoStr = (ago / (1000L*60*60*24*365)) + "y" + ((tmp = (ago % (1000L*60*60*24*365) / (1000L*60*60*24))) != 0 ? (tmp + "d") : "");
+		}
+		return agoStr;
 	}
 
 	public static void PowerCubeDetailsUiCreator_onActionButtonsTableCreated(final Table t) {

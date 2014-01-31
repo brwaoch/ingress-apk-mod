@@ -44,6 +44,8 @@ broot.ingress.mod.Entry:
     ShieldShader_getRampTargetInvWidthY: [null, F, F]
     HackAnimationStage_getTotalTime: [null, F, F]
     HackController_shouldShowAnimation: [null, Z]
+    HackController_onHackResult: [null, V, Ljava/util/List;]
+    HackController_setPortalGuid: [null, V, $String]
     InventoryItemRenderer_shouldRotate: [null, Z]
     InventoryItemRenderer_simplifyItems: [null, Z]
     ItemActionHandler_recycleAnimationsEnabled: [null, Z]
@@ -107,6 +109,11 @@ com.nianticproject.ingress.gameentity.GameEntity:
 
 com.nianticproject.ingress.gameentity.EntityComponent:
   obf_name: com.nianticproject.ingress.gameentity.a
+
+com.nianticproject.ingress.gameentity.Component:
+  obf_name: com.nianticproject.ingress.gameentity.i
+  methods:
+    getEntityGuid: [getEntityGuid, $String]
 
 com.nianticproject.ingress.gameentity.components.ItemRarity:
   is_enum: true

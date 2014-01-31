@@ -314,6 +314,13 @@ public class AboutModActivity extends BaseSubActivity {
 						updateValues();
 					}
 				});
+				uiTweaksItem.addButton(Pref.PortalInfoDialogShowsHacksTimer, new ClickListener() {
+					@Override
+					public void clicked(final InputEvent event, final float x, final float y) {
+						Config.invertBooleanPreference(Pref.PortalInfoDialogShowsHacksTimer);
+						updateValues();
+					}
+				});
 				uiTweaksItem.addButton(Pref.EnablePowerCubesRecycle, new ClickListener() {
 					@Override
 					public void clicked(final InputEvent event, final float x, final float y) {

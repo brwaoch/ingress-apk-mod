@@ -114,7 +114,8 @@ public class Config {
 		AllowModRecycle(0, "Allow Mods recycling", AllowModRecycle.class),
 		IsPrivacyOn(0, "Privacy"),
 		NeedInviteNagBlock(0, "Block invite nag"),
-		UiVariant(0, "", UiVariant.class);
+		UiVariant(0, "", UiVariant.class),
+		PortalInfoDialogShowsHacksTimer(0, "Hacks Timer");
 
 		private final int      defaultValue;
 		private final String   description;

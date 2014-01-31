@@ -1,6 +1,13 @@
 package broot.ingress.mod;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlarmManager;
@@ -78,6 +85,8 @@ public class Mod {
 		final AlarmManager mgr = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, PendingIntent.getActivity(ctx, 0, i, 0));
 
+		HacksTimer.save();
+
 		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
@@ -93,6 +102,72 @@ public class Mod {
 		}
 
 		return 1f;
+	}
+
+	public static String HackController_portalGuid;
+
+	public static class HacksTimer {
+		private final static HashMap<String,Long> hackTimes = new HashMap<String,Long>(); // portalGuid->timestamp
+		public static void registerHackAtTime(final String portalGuid, final long timestamp) {
+			hackTimes.put(portalGuid, timestamp);
+		}
+		public static long getLastHackTime(final String portalGuid) {
+			final long result;
+			if (hackTimes.containsKey(portalGuid)) {
+				result = hackTimes.get(portalGuid);
+			} else {
+				result = PORTAL_NOT_HACKED_YET;
+			}
+			return result;
+		}
+		public static final long PORTAL_NOT_HACKED_YET = 0;
+		private static final String INTERNAL_STORAGE_FILENAME = "hacktimer";
+		public static void save() {
+			ObjectOutputStream oos = null;
+			try {
+				oos = new ObjectOutputStream(app.openFileOutput(INTERNAL_STORAGE_FILENAME, Context.MODE_PRIVATE)); // recreate
+				oos.writeObject(hackTimes);
+			} catch (final Exception e) {
+				// ignore
+			} finally {
+				if (oos != null) {
+					try {
+						oos.close();
+					} catch (final Exception e) {
+						// ignore
+					}
+				}
+			}
+		}
+		public static void load() {
+			ObjectInputStream ois = null;
+			try {
+				ois = new ObjectInputStream(app.openFileInput(INTERNAL_STORAGE_FILENAME));
+				try {
+					final HashMap<String,Long> map = (HashMap<String,Long>)ois.readObject();
+					hackTimes.clear();
+					hackTimes.putAll(map);
+				} catch (final ClassNotFoundException e) { // from ObjectInputStream.readObject, file corrupted, delete
+					app.deleteFile(INTERNAL_STORAGE_FILENAME);
+				} catch (final OptionalDataException e) { // from ObjectInputStream.readObject, file corrupted, delete
+					app.deleteFile(INTERNAL_STORAGE_FILENAME);
+				} catch (final IOException e) { // from ObjectInputStream.readObject, i/o error, maybe transient? leave data
+					// ignore
+				}
+			} catch (final StreamCorruptedException e) { // from ObjectInputStream.<init>, file corrupted, delete
+				app.deleteFile(INTERNAL_STORAGE_FILENAME);
+			} catch (final Exception e) {
+				// ignore
+			} finally {
+				if (ois != null) {
+					try {
+						ois.close();
+					} catch (final Exception e) {
+						// ignore
+					}
+				}
+			}
+		}
 	}
 
 	public static void updateCurrUiVariant() {
