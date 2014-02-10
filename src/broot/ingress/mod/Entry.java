@@ -10,12 +10,14 @@ import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
+
 import broot.ingress.mod.BuildConfig.UiVariant;
 import broot.ingress.mod.util.Config;
 import broot.ingress.mod.util.Config.AllowModRecycle;
 import broot.ingress.mod.util.Config.ChatTimeFormat;
 import broot.ingress.mod.util.Config.GpsLockTime;
 import broot.ingress.mod.util.Config.Pref;
+import broot.ingress.mod.util.Dumper;
 import broot.ingress.mod.util.InventoryUtils;
 import broot.ingress.mod.util.MenuUtils;
 
@@ -57,6 +59,11 @@ public class Entry {
 
 	static {
 		Mod.init();
+	}
+
+	public static void dump(Object obj) {
+		Log.v("broot-dump", obj.getClass().toString());
+		Log.v("broot-dump", Dumper.dump(obj, 2, 10, null));
 	}
 
 	public static FileHandle AssetFinder_onGetAssetPath(final String in) {

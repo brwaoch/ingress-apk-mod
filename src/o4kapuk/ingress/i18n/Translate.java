@@ -46,15 +46,19 @@ public class Translate {
 		}
 	}
 
-	public static CharSequence t(Label label, CharSequence org)
+	public static CharSequence t(Object obj, CharSequence org) {
+		return s(obj, org);
+	}
+
+	public static String s(Object obj, CharSequence org)
 	{
 		if(org == "NAVIGATE") {
-			Group g = label.getParent();
-			if(g == null) {
-				Log.v("translate", "group is null");
-			} else {
-				Log.v("translate", g.toString());
-			}
+//			Group g = label.getParent();
+//			if(g == null) {
+//				Log.v("translate", "group is null");
+//			} else {
+//				Log.v("translate", g.toString());
+//			}
 			Thread.dumpStack();
 //			Log.v("translate", "name:" + n != null ? n : "null" + ", group: " + g != null ? g.toString() : "null");
 		}
@@ -66,6 +70,7 @@ public class Translate {
 		for(Map.Entry<Pattern, String> entry : dictRe.entrySet()) {
 			Matcher matcher = entry.getKey().matcher(org);
 			if(matcher.matches()) {
+				Log.v("translate", "Found: " + org.toString());
 				final List<String> matches = new ArrayList<String>();
 
 				for(int i = 1; i <= matcher.groupCount(); i++) {
@@ -83,8 +88,8 @@ public class Translate {
 			}
 		}
 
-//		Log.v("translate", "Not found: " + org.toString());
-		return org;
+		Log.v("translate", "Not found: " + org.toString());
+		return org.toString();
 	}
 
 	public static void v(Object obj)
