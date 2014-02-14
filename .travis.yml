@@ -29,9 +29,6 @@ script:
 after_success:
 - curl -T *mute*.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm *mute*.apk
 - curl -T *.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm *.apk
-notifications:
-  email:
-    on_success: always
 env:
   global:
   - secure: l9xlGtBxYHqO7jgflqoMbVmUugF8DRP/YrMNxtgY23w+Cp4zm7dXKKzP68u2JlxzpoFONwK7orNwNlUo1Jf/O9BRHTGbwNDk7S/cDHr0D9k2sPyyASlLLzW+TEb/AgQTU7fKNYzzJO7JOvJzZyFriEB4STDggXGUX/RQguJXUI0=
