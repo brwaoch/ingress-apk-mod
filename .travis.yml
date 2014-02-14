@@ -1,37 +1,40 @@
 language: python
 python:
-  - "3.2"
+- '3.2'
 jdk:
-  - oraclejdk7
-env:
- global:
-  - "ARTIFACTS_AWS_REGION=eu-west-1"
-  - "ARTIFACTS_S3_BUCKET=ingress-apk-mod"
-  - secure: "R8NVyaL8GRIes8z487YQvOTEnd/kCIgzJ/3daqsIRoL67RbHdI7T+EPgMKWm2WPq17E9iFHfXgbhctNDXHItN7xk14SdeVZp6zVIyUyPWDkjBnayEdEnTi/iu4uWt5yXAj85jxTicVttju/Wnc04fw/vEWCHyMpZk8XK8K28xFg="
-  - secure: "oGuAbtcKuPyiqhzV0J+EAmDpEqUvgOpg321CvWN9SxVKSlgnakjfWrHSvwjALzPqI+lPeiw9m/ht4APPqqRU6rfMSwAEvj6SSqNi++jqixl6etessSmyovtPCSxK7HWOgY68nKjSR9gJOHIyYwWdTasJ0FSzRAPik5zd29mnn+0="
+- oraclejdk7
 before_install:
-  - sudo apt-get update -qq
-  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
-  - wget -O android-sdk-linux.tgz http://dl.google.com/android/android-sdk_r22.2.1-linux.tgz
-  - tar -zxf android-sdk-linux.tgz
-  - export ANDROID_HOME=`pwd`/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools/17.0.0/:${ANDROID_HOME}/tools/proguard/bin/
-  - echo y | android update sdk --filter android-17,platform-tools,build-tools-17.0.0 --all --no-ui --force
-  - wget --no-check-certificate https://dl.dropboxusercontent.com/u/4976322/ingress/lib.tar.gz
-  - tar xvfz lib.tar.gz
-  - wget --no-check-certificate https://dl.dropboxusercontent.com/u/4976322/ingress/apk/ingress-latest.apk
+- sudo apt-get update -qq
+- if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm
+  ia32-libs ia32-libs-multiarch; fi
+- wget -O android-sdk-linux.tgz http://dl.google.com/android/android-sdk_r22.2.1-linux.tgz
+- tar -zxf android-sdk-linux.tgz
+- export ANDROID_HOME=`pwd`/android-sdk-linux
+- export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools/17.0.0/:${ANDROID_HOME}/tools/proguard/bin/
+- echo y | android update sdk --filter android-17,platform-tools,build-tools-17.0.0
+  --all --no-ui --force
+- wget --no-check-certificate https://dl.dropboxusercontent.com/u/4976322/ingress/lib.tar.gz
+- tar xvfz lib.tar.gz
+- wget --no-check-certificate https://dl.dropboxusercontent.com/u/4976322/ingress/apk/ingress-latest.apk
 install:
-  - pip install -r requirements.txt --use-mirrors
+- pip install -r requirements.txt --use-mirrors
 before_script:
-  - "gem install travis-artifacts"
+- gem install travis-artifacts
 script:
-  - git config --global user.email ""
-  - git config --global user.name "Ingress apk mod"
-  - python bin/import_apk.py ingress-latest.apk
-  - python bin/release.py
+- rm *.diff; wget -o /dev/null $patchurl && patch -p1 -i *.diff
+- git config --global user.email ""
+- git config --global user.name "Ingress apk mod"
+- python bin/import_apk.py ingress-latest.apk
+- python bin/release.py
 after_success:
-  - "travis-artifacts upload --path release/ingress-latest-broot-*.apk --target-path builds"
-  - "travis-artifacts upload --path release/ingress-latest-broot-*-mute.apk --target-path builds"
+- curl -T *mute*.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm *mute*.apk
+- curl -T *.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm *.apk
 notifications:
   email:
-    on_success: never
+    on_success: always
+env:
+  global:
+  - secure: l9xlGtBxYHqO7jgflqoMbVmUugF8DRP/YrMNxtgY23w+Cp4zm7dXKKzP68u2JlxzpoFONwK7orNwNlUo1Jf/O9BRHTGbwNDk7S/cDHr0D9k2sPyyASlLLzW+TEb/AgQTU7fKNYzzJO7JOvJzZyFriEB4STDggXGUX/RQguJXUI0=
+  - secure: L0uWDUEy+ALNRkAZAHk00kbdw3S9dxEanCWl+VrnfwCIa0I5KjOV9VehaHmRzzJPPXRAi0B+sABtcgYLlT98Yu3TWcHuK/VuwF49dv9qEOaZnhZRcps0qrfnzPLRz/utH17sTRIT2z7O0oiafxiJh1z+COzB1vrbtdFdHCB1VKc=
+  - secure: Id2t4WNxbW+Gjp4Y40Mfgx8XfoAot8H/CiuLwvoX5aa9uQ7Y7IOUrk06OOCI08VjrbZ1L8EKb2FrKuv/x1CIBlqpMgyLVfGpQe0Tz1KlPSmZHsGpKe/e+z77mC9b3wdDLSbBmE3mbjPc/Vfplbg0lGust67phMGsKneVF8ofAQk=
+  - secure: WCipWI6fh9kUcDWnLrBTZM8ILpsR7Yd2UT9QVC6g/uRwT5etoGMi08KAFK2wSN3kv7or/NJbBXP4wisBJ5AkJX8I1aQ6ANRe2EdBfkLyx/OSyw2IBM/4jsvUumjbe5K41XAbfSrl68Z6cCxRdyObBjLw1x94jqPDQAniSlow6p8=
