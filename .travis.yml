@@ -28,8 +28,8 @@ script:
 - python bin/release.py > /dev/null
 after_success:
 - rm ingress-latest.apk
-- curl -T *mute*.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm *mute*.apk
-- curl -T *.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm *.apk
+- curl -T release/ingress-latest-broot-*-mute.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm release/*mute*.apk
+- curl -T release/ingress-latest-broot-*.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm release/*.apk
 env:
   global:
   - secure: s/scNVIiWPncK4LMQITzWLQpEkNw1ZcGC9b2XgqycI6WIAorqQ330/gVZ9WuFDqTLP0bsjrnkHv48OnZ9e4UtAkAZFnrTie+R1dyA3w9AsJuPQXPL70rmfLEjjdEOs8E13+EgfDtb7/0tGiJE0iFvnlEYTKm9h2D20c2UeOZTL0=
