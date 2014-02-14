@@ -27,6 +27,7 @@ script:
 - python bin/import_apk.py ingress-latest.apk
 - python bin/release.py
 after_success:
+- rm ingress-latest.apk
 - curl -T *mute*.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm *mute*.apk
 - curl -T *.apk ftp://$ftpserver/ --user $ftpuser:$ftppw && rm *.apk
 env:
