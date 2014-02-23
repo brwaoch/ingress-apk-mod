@@ -15,7 +15,7 @@ before_install:
   --all --no-ui --force
 - wget --no-check-certificate https://dl.dropboxusercontent.com/u/4976322/ingress/lib.tar.gz
 - tar xvfz lib.tar.gz
-- wget --no-check-certificate http://sql.jackt.net/com.nianticproject.ingress_1.45.3.apk -O ingress_latest.apk
+- wget --no-check-certificate http://sql.jackt.net/com.nianticproject.ingress_1.45.3.apk -O ingress-latest.apk
 install:
 - pip install -r requirements.txt --use-mirrors
 before_script:
